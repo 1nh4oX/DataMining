@@ -1,0 +1,31 @@
+project:
+  name: bike-sharing-demand-data-mining
+  random_state: 42
+
+data:
+  url: https://archive.ics.uci.edu/static/public/275/bike+sharing+dataset.zip
+  raw_dir: data/raw
+  extract_dir: data/raw/bike_sharing_dataset
+  processed_dir: data/processed
+  features_file: data/processed/hour_features.csv
+  target: cnt
+  train_ratio: 0.8
+
+outputs:
+  figures_dir: reports/figures
+  tables_dir: reports/tables
+  summary_file: reports/experiment_summary.md
+
+models:
+  - historical_mean
+  - linear_regression
+  - ridge
+  - lasso
+  - random_forest
+  - gradient_boosting
+
+plotting:
+  seaborn_style: whitegrid
+  palette: crest
+  cmap: crest
+
