@@ -15,6 +15,7 @@ from bike_dm.data import load_hourly_data
 from bike_dm.features import TARGET, build_features, feature_columns, split_time_ordered
 from bike_dm.analysis import compute_error_slices, evaluate_history_ablation
 from bike_dm.models import extract_feature_importance, make_models, run_models
+from bike_dm.planning import calculate_supply_plan
 from bike_dm.plots import generate_all_figures
 from bike_dm.summary import write_summary
 
@@ -46,6 +47,7 @@ def main() -> None:
     importance_path = tables_dir / "feature_importance.csv"
     ablation_path = tables_dir / "history_ablation.csv"
     error_slices_path = tables_dir / "error_slices.csv"
+    planning_path = root_path(config["outputs"].get("planning_file", "reports/tables/supply_plan.csv"))
 
     result.metrics.to_csv(metrics_path, index=False)
     result.predictions.to_csv(predictions_path, index=False)
@@ -60,6 +62,18 @@ def main() -> None:
     ablation_df.to_csv(ablation_path, index=False)
     error_slices_df = compute_error_slices(test_df, result.predictions, result.best_model_name)
     error_slices_df.to_csv(error_slices_path, index=False)
+
+    planning_input = test_df[["datetime", "is_peak_hour"]].copy()
+    planning_input["predicted_demand"] = result.predictions[result.best_model_name].to_numpy()
+    planning_df = calculate_supply_plan(
+        planning_input,
+        service_level=float(config.get("planning", {}).get("service_level", 0.90)),
+        safety_buffer_ratio=float(
+            config.get("planning", {}).get("safety_buffer_ratio", 0.10)
+        ),
+    )
+    planning_path.parent.mkdir(parents=True, exist_ok=True)
+    planning_df.to_csv(planning_path, index=False)
 
     figures = generate_all_figures(
         raw_df=raw_df,
@@ -84,6 +98,7 @@ def main() -> None:
     print(f"Wrote feature importance: {importance_path}")
     print(f"Wrote history ablation: {ablation_path}")
     print(f"Wrote error slices: {error_slices_path}")
+    print(f"Wrote supply plan: {planning_path}")
     print(f"Wrote {len(figures)} figures under: {figures_dir}")
     print(f"Wrote summary: {summary_path}")
 
