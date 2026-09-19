@@ -38,13 +38,13 @@
 
 ## 生成图表
 
-- `reports/figures/01_hourly_demand.png`
-- `reports/figures/02_weekday_weekend.png`
-- `reports/figures/03_weather_relationship.png`
-- `reports/figures/04_correlation_heatmap.png`
-- `reports/figures/05_model_rmse_comparison.png`
-- `reports/figures/06_prediction_curve.png`
-- `reports/figures/07_feature_importance.png`
+- `reports\figures\01_hourly_demand.png`
+- `reports\figures\02_weekday_weekend.png`
+- `reports\figures\03_weather_relationship.png`
+- `reports\figures\04_correlation_heatmap.png`
+- `reports\figures\05_model_rmse_comparison.png`
+- `reports\figures\06_prediction_curve.png`
+- `reports\figures\07_feature_importance.png`
 
 ## 模型指标表
 
