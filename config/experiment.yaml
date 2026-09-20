@@ -15,6 +15,11 @@ outputs:
   figures_dir: reports/figures
   tables_dir: reports/tables
   summary_file: reports/experiment_summary.md
+  planning_file: reports/tables/supply_plan.csv
+
+planning:
+  service_level: 0.90
+  safety_buffer_ratio: 0.10
 
 models:
   - historical_mean
